@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Víctor Escobar Hurtado — Ingeniero de Sistemas | Operaciones &amp; Datos</title>
+<meta name="description" content="Víctor Emanuel Escobar Hurtado — Ingeniero de Sistemas especializado en operaciones, análisis de datos y gestión comercial. Trinidad, Beni, Bolivia. Disponibilidad inmediata.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#ffffff;
+    --ink:#0c1a2e;
+    --ink-soft:#3b465c;
+    --navy:#0f2c5c;
+    --blue:#2f6fed;
+    --blue-soft:#e8f0fe;
+    --sky:#8ec5fc;
+    --gold:#c9972e;
+    --gold-soft:#faf1de;
+    --gray:#64748b;
+    --line:#e3e8f0;
+    --bg:#fbfcfe;
+    --sidebar-w:320px;
+    --radius-s:8px;
+    --radius-m:16px;
+    --radius-l:26px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--white);
+    color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.65;
+  }
+  h1,h2,h3,.display{
+    font-family:"Space Grotesk",system-ui,sans-serif;
+    color:var(--navy);
+    line-height:1.15;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+
+  /* faint dot-grid texture, nods to spreadsheets/data */
+  .dot-grid{
+    background-image:radial-gradient(circle, #cfe0fb 1px, transparent 1px);
+    background-size:22px 22px;
+  }
+
+  /* ================= LAYOUT SHELL ================= */
+  .shell{
+    display:grid;
+    grid-template-columns:var(--sidebar-w) 1fr;
+    min-height:100vh;
+  }
+
+  /* ---------------- SIDEBAR ---------------- */
+  .sidebar{
+    position:sticky; top:0; height:100vh; overflow-y:auto;
+    background:linear-gradient(180deg,#0f2c5c 0%, #123568 55%, #16407e 100%);
+    color:#fff;
+    padding:44px 30px 32px;
+    display:flex; flex-direction:column; gap:26px;
+  }
+
+  .avatar-wrap{
+    width:132px; height:132px; border-radius:50%;
+    margin:0 auto;
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .avatar-ring{
+    position:absolute; inset:0; border-radius:50%;
+    background:conic-gradient(from 0deg, var(--sky), var(--gold), var(--sky));
+    animation:spin 9s linear infinite;
+    padding:4px;
+  }
+  .avatar-ring::after{
+    content:""; position:absolute; inset:4px; border-radius:50%; background:#123568;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .avatar-photo{
+    position:relative; z-index:1;
+    width:112px; height:112px; border-radius:50%;
+    overflow:hidden;
+    border:3px solid #123568;
+    background:#e8f0fe;
+  }
+  /* --- REEMPLAZA el src de #profilePhoto por tu foto real (misma proporción cuadrada recomendada) --- */
+  .avatar-photo img{
+    width:100%; height:100%; object-fit:cover; object-position:center top;
+  }
+
+  .id-block{text-align:center;}
+  .id-name{font-size:21px; font-weight:700; color:#fff;}
+  .id-role{font-size:13.5px; color:#bcd4fb; margin-top:6px; line-height:1.5;}
+
+  .avail-pill{
+    display:flex; align-items:center; justify-content:center; gap:7px;
+    font-size:12.5px; font-weight:600; color:#2a1f06;
+    background:linear-gradient(135deg,#f3d98b,var(--gold));
+    padding:8px 14px; border-radius:999px; margin:0 auto;
+  }
+  .avail-pill .dot{
+    width:6px; height:6px; border-radius:50%; background:#2a1f06;
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+
+  .loc-line{
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    font-size:13px; color:#cfe0fb;
+  }
+
+  .side-actions{display:flex; flex-direction:column; gap:10px;}
+  .side-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    text-decoration:none; font-size:13.5px; font-weight:600;
+    padding:11px 16px; border-radius:999px;
+    transition:transform .2s, background .2s;
+  }
+  .side-btn.primary{background:#fff; color:var(--navy);}
+  .side-btn.primary:hover{transform:translateY(-2px);}
+  .side-btn.ghost{background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.28);}
+  .side-btn.ghost:hover{background:rgba(255,255,255,0.18);}
+
+  .side-nav{
+    display:flex; flex-direction:column; gap:2px;
+    border-top:1px solid rgba(255,255,255,0.15);
+    padding-top:18px;
+  }
+  .side-nav a{
+    text-decoration:none; font-size:13.5px; font-weight:500; color:#cfe0fb;
+    padding:9px 10px; border-radius:8px;
+    display:flex; align-items:center; gap:10px;
+    transition:background .2s, color .2s;
+  }
+  .side-nav a .n{
+    font-family:"Space Grotesk",sans-serif; font-size:11.5px; color:#7fa3dd; min-width:16px;
+  }
+  .side-nav a:hover, .side-nav a.active{background:rgba(255,255,255,0.12); color:#fff;}
+
+  .side-tools{
+    margin-top:auto;
+    padding-top:18px; border-top:1px solid rgba(255,255,255,0.15);
+  }
+  .side-tools p{font-size:11.5px; color:#7fa3dd; margin:0 0 10px; text-transform:none;}
+  .tools-mini{display:flex; flex-wrap:wrap; gap:8px;}
+  .tools-mini span{
+    display:flex; align-items:center; gap:6px;
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18);
+    padding:6px 10px; border-radius:999px; font-size:11.5px; color:#e6eefc;
+  }
+  .tools-mini img{width:14px; height:14px;}
+
+  /* ---------------- MAIN CONTENT ---------------- */
+  .main{padding:0;}
+  .mobile-bar{display:none;}
+
+  .content-section{
+    padding:64px 56px;
+    max-width:880px;
+  }
+  .content-section + .content-section{border-top:1px solid var(--line);}
+  .kicker{
+    font-size:13px; font-weight:600; color:var(--blue);
+  }
+  .content-section h2{
+    font-size:clamp(24px,2.6vw,30px); margin-top:8px;
+  }
+  .lede{color:var(--ink-soft); font-size:15.5px; margin-top:12px; max-width:62ch;}
+
+  /* --- about --- */
+  .about-copy p{color:var(--ink-soft); font-size:16px; max-width:64ch;}
+  .about-stats{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:32px;
+  }
+  .stat{
+    border:1px solid var(--line); border-radius:var(--radius-m); padding:20px;
+    background:var(--bg);
+  }
+  .stat b{font-family:"Space Grotesk",sans-serif; font-size:26px; color:var(--navy); display:block;}
+  .stat span{font-size:13px; color:var(--gray); margin-top:6px; display:block;}
+
+  /* --- experience: accent-bar cards --- */
+  .exp-list{display:flex; flex-direction:column; gap:18px; margin-top:32px;}
+  .exp-card{
+    position:relative;
+    border:1px solid var(--line); border-radius:var(--radius-m);
+    padding:24px 26px 24px 30px;
+    background:#fff;
+  }
+  .exp-card::before{
+    content:""; position:absolute; left:0; top:16px; bottom:16px; width:4px; border-radius:4px;
+    background:var(--sky);
+  }
+  .exp-card.current::before{background:linear-gradient(var(--gold),var(--blue));}
+  .exp-top{
+    display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap;
+  }
+  .exp-role{font-family:"Space Grotesk",sans-serif; font-weight:600; font-size:17px; color:var(--navy);}
+  .exp-date{font-size:12.5px; font-weight:600; color:var(--gray); white-space:nowrap;}
+  .exp-org{font-size:13.5px; color:var(--blue); font-weight:600; margin-top:2px;}
+  .exp-bullets{list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .exp-bullets li{font-size:14px; color:var(--ink-soft); padding-left:16px; position:relative;}
+  .exp-bullets li::before{content:"–"; position:absolute; left:0; color:var(--sky); font-weight:700;}
+
+  /* --- education --- */
+  .edu-row{display:flex; flex-direction:column; gap:0; margin-top:28px;}
+  .edu-line{
+    display:grid; grid-template-columns:140px 1fr; gap:20px;
+    padding:16px 0; border-top:1px solid var(--line);
+  }
+  .edu-row .edu-line:last-child{border-bottom:1px solid var(--line);}
+  .edu-y{font-size:12.5px; font-weight:700; color:var(--gold);}
+  .edu-t{font-family:"Space Grotesk",sans-serif; font-weight:600; font-size:15.5px; color:var(--navy);}
+  .edu-o{font-size:13px; color:var(--gray); margin-top:3px;}
+
+  /* --- skills --- */
+  .skill-groups{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:30px;}
+  .skill-box h3{font-size:14.5px; font-weight:600; color:var(--navy);}
+  .tag-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
+  .tag{
+    font-size:12px; font-weight:500; color:var(--ink-soft);
+    background:var(--bg); border:1px solid var(--line);
+    padding:5px 10px; border-radius:var(--radius-s);
+  }
+
+  /* --- contact --- */
+  .contact-card{
+    margin-top:32px;
+    background:linear-gradient(135deg,var(--navy),var(--blue) 120%);
+    border-radius:var(--radius-l);
+    padding:40px;
+    color:#fff;
+    position:relative; overflow:hidden;
+  }
+  .contact-card::after{
+    content:""; position:absolute; right:-100px; top:-100px; width:280px; height:280px; border-radius:50%;
+    background:radial-gradient(circle, rgba(142,197,252,0.35), transparent 70%);
+  }
+  .contact-card h3{color:#fff; font-size:22px; position:relative; z-index:1;}
+  .contact-card p{color:#dbe6fb; margin-top:8px; font-size:14.5px; position:relative; z-index:1;}
+  .contact-chips{display:flex; flex-wrap:wrap; gap:12px; margin-top:22px; position:relative; z-index:1;}
+  .c-chip{
+    display:flex; align-items:center; gap:10px;
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.22);
+    padding:11px 16px; border-radius:999px; color:#fff; text-decoration:none;
+    font-size:13.5px; font-weight:500; cursor:pointer;
+  }
+  .c-chip:hover{background:rgba(255,255,255,0.18);}
+  .copy-note{font-size:12px; color:var(--sky); margin-top:10px; height:14px; position:relative; z-index:1;}
+
+  footer.page-end{
+    padding:28px 56px 56px; color:var(--gray); font-size:13px;
+  }
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width:980px){
+    .shell{grid-template-columns:1fr;}
+    .sidebar{
+      position:relative; height:auto;
+      flex-direction:column;
+      padding:40px 24px 28px;
+    }
+    .side-nav{display:none;}
+    .content-section{padding:48px 24px; max-width:100%;}
+    footer.page-end{padding:24px 24px 40px;}
+
+    .mobile-bar{
+      display:flex; gap:4px; overflow-x:auto;
+      position:sticky; top:0; z-index:40;
+      background:rgba(251,252,254,0.92); backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--line);
+      padding:12px 16px;
+    }
+    .mobile-bar a{
+      flex:0 0 auto; text-decoration:none; font-size:13px; font-weight:500; color:var(--ink-soft);
+      padding:7px 12px; border-radius:999px; white-space:nowrap;
+    }
+    .mobile-bar a.active{background:var(--blue-soft); color:var(--blue);}
+  }
+  @media (max-width:560px){
+    .about-stats{grid-template-columns:1fr;}
+    .skill-groups{grid-template-columns:1fr;}
+    .exp-top{flex-direction:column; gap:4px;}
+    .contact-card{padding:28px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar dot-grid" id="sidebar">
+    <div class="avatar-wrap">
+      <div class="avatar-ring"></div>
+      <div class="avatar-photo">
+        <!-- id="profilePhoto": reemplaza el src por la URL o archivo de tu foto real -->
+        <img id="profilePhoto"
+             src="https://static.vecteezy.com/system/resources/previews/036/594/092/non_2x/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"
+             alt="Foto de perfil de Víctor Escobar Hurtado">
+      </div>
+    </div>
+
+    <div class="id-block">
+      <div class="id-name">Víctor Emanuel<br>Escobar Hurtado</div>
+      <div class="id-role">Ingeniero de Sistemas — Operaciones, Datos &amp; Gestión Comercial</div>
+    </div>
+
+    <div class="avail-pill"><span class="dot"></span>Disponibilidad inmediata</div>
+    <div class="loc-line">📍 Trinidad, Beni, Bolivia</div>
+
+    <div class="side-actions">
+      <a class="side-btn primary" href="mailto:victoremanueleh@gmail.com">Escribir un correo</a>
+      <a class="side-btn ghost" href="tel:+59174708845">Llamar / WhatsApp</a>
+    </div>
+
+    <nav class="side-nav">
+      <a href="#perfil"><span class="n">01</span>Perfil</a>
+      <a href="#experiencia"><span class="n">02</span>Experiencia</a>
+      <a href="#educacion"><span class="n">03</span>Educación</a>
+      <a href="#habilidades"><span class="n">04</span>Habilidades</a>
+      <a href="#contacto"><span class="n">05</span>Contacto</a>
+    </nav>
+
+    <div class="side-tools">
+      <p>Herramientas</p>
+      <div class="tools-mini">
+        <span><img src="https://cdn.simpleicons.org/microsoftexcel/ffffff" alt="">Excel</span>
+        <span><img src="https://cdn.simpleicons.org/microsoftword/ffffff" alt="">Word</span>
+        <span><img src="https://cdn.simpleicons.org/microsoftpowerpoint/ffffff" alt="">PowerPoint</span>
+        <span><img src="https://cdn.simpleicons.org/microsoftoutlook/ffffff" alt="">Outlook</span>
+        <span><img src="https://cdn.simpleicons.org/canva/ffffff" alt="">Canva</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <div class="main">
+
+    <nav class="mobile-bar" id="mobileBar">
+      <a href="#perfil">Perfil</a>
+      <a href="#experiencia">Experiencia</a>
+      <a href="#educacion">Educación</a>
+      <a href="#habilidades">Habilidades</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <!-- ---- PERFIL ---- -->
+    <section class="content-section" id="perfil">
+      <div class="kicker">Perfil</div>
+      <h2>De aulas virtuales a rutas de distribución</h2>
+      <div class="about-copy" style="margin-top:20px;">
+        <p>Soy Víctor, ingeniero de sistemas que terminó enamorándose de la logística y los números. Empecé apoyando aulas virtuales y comunidades digitales, pasé por seguridad de la información, análisis de crédito y caja, y hoy coordino la operación comercial de una distribuidora: almacenes, rutas, cobranzas y reportes.</p>
+        <p>Lo que más disfruto es construir el orden detrás del desorden: un Kardex bien armado, un dashboard que cuenta una historia, un proceso que deja de doler. Soy proactivo, me adapto rápido a nuevas herramientas y disfruto tanto ejecutar en el día a día como proponer mejoras.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat"><b>9</b><span>roles distintos desde 2020, un mismo hilo: optimizar procesos</span></div>
+        <div class="stat"><b>6+</b><span>años combinando trabajo operativo, comercial y tecnológico</span></div>
+        <div class="stat"><b>3</b><span>localidades coordinadas: Santa Rosa, San Joaquín y Santa Ana</span></div>
+      </div>
+    </section>
+
+    <!-- ---- EXPERIENCIA ---- -->
+    <section class="content-section" id="experiencia">
+      <div class="kicker">Experiencia</div>
+      <h2>Trayectoria profesional</h2>
+      <p class="lede">Cada etapa sumó una herramienta nueva a la caja: comunidad, seguridad, crédito, caja y hoy, operaciones comerciales completas.</p>
+
+      <div class="exp-list">
+        <div class="exp-card current">
+          <div class="exp-top"><span class="exp-role">Administrativo Operativo y Comercial</span><span class="exp-date">2025 — Actualidad</span></div>
+          <div class="exp-org">Distribuidora Rocha</div>
+          <ul class="exp-bullets">
+            <li>Control de inventarios y Kardex; recepción y despacho de mercadería</li>
+            <li>Coordinación de rutas de distribución, liquidación y arqueo de ventas</li>
+            <li>Conciliación de efectivo, cobranzas y reportes de análisis de ventas</li>
+            <li>Supervisión de promotores y distribuidores en Santa Rosa, San Joaquín y Santa Ana</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-top"><span class="exp-role">Cajero, Oficina Central</span><span class="exp-date">Ago — Dic 2024</span></div>
+          <div class="exp-org">CACTRI R.L.</div>
+          <ul class="exp-bullets">
+            <li>Arqueo y cuadre de caja, depósitos y transferencias bancarias</li>
+            <li>Detección de billetes falsos y prevención de lavado de dinero (UIF)</li>
+            <li>Atención al cliente y venta de productos financieros</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-top"><span class="exp-role">Oficial de Crédito</span><span class="exp-date">Ene — Jul 2024</span></div>
+          <div class="exp-org">CACTRI R.L.</div>
+          <ul class="exp-bullets">
+            <li>Análisis de crédito y evaluación de riesgo crediticio</li>
+            <li>Seguimiento y recuperación de cartera, cobranza preventiva</li>
+            <li>Visitas de inspección y elaboración de informes de crédito</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-top"><span class="exp-role">Asistente 1, Área de Sistemas</span><span class="exp-date">Ago — Dic 2023</span></div>
+          <div class="exp-org">CACTRI R.L.</div>
+          <ul class="exp-bullets">
+            <li>Soporte técnico, diagnóstico de hardware y administración de biométrico</li>
+            <li>Instalación y configuración de sistemas Windows</li>
+            <li>Gestión de activos informáticos y soporte remoto</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-top"><span class="exp-role">Oficial de Seguridad de la Información a.i.</span><span class="exp-date">Feb — Jul 2023</span></div>
+          <div class="exp-org">CACTRI R.L.</div>
+          <ul class="exp-bullets">
+            <li>Gestión de riesgos y cumplimiento normativo ISO/IEC 27001 y 27002</li>
+            <li>Gestión de incidentes y continuidad del negocio</li>
+            <li>Elaboración de políticas y capacitación en seguridad de la información</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-top"><span class="exp-role">Asistente 1, Área Comercial</span><span class="exp-date">Jul — Dic 2022</span></div>
+          <div class="exp-org">CACTRI R.L.</div>
+          <ul class="exp-bullets">
+            <li>Elaboración de informes gerenciales, dashboards y reportes comerciales</li>
+            <li>Seguimiento de metas y campañas comerciales, segmentación de clientes</li>
+            <li>Excel avanzado, gestión de bases de datos y sistemas ERP/CRM</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-top"><span class="exp-role">Colaborador Académico</span><span class="exp-date">2021</span></div>
+          <div class="exp-org">CIS — UABJB, Carrera de Ingeniería en Sistemas</div>
+          <ul class="exp-bullets">
+            <li>Apoyo académico en aulas virtuales y conferencias sobre herramientas digitales</li>
+            <li>Participación en concurso de programación</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-top"><span class="exp-role">Pasante</span><span class="exp-date">Oct 2020 — Mar 2021</span></div>
+          <div class="exp-org">UABJB — Dirección de Planificación Académica</div>
+          <ul class="exp-bullets">
+            <li>Apoyo administrativo y Community Management</li>
+            <li>Diseño de infografías, contenido académico y logotipo</li>
+            <li>Inscripciones y conferencias virtuales</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-top"><span class="exp-role">Capacitador Virtual en Educación a Distancia</span><span class="exp-date">Jun — Sep 2020</span></div>
+          <div class="exp-org">UABJB</div>
+          <ul class="exp-bullets">
+            <li>Capacitación gratuita sobre plataformas de educación a distancia para unidades educativas, durante la pandemia</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---- EDUCACIÓN ---- -->
+    <section class="content-section" id="educacion">
+      <div class="kicker">Educación</div>
+      <h2>Formación académica</h2>
+      <div class="edu-row">
+        <div class="edu-line">
+          <div class="edu-y">2025</div>
+          <div><div class="edu-t">Diplomado en Seguridad Informática</div><div class="edu-o">Escuela de Posgrado — UABJB</div></div>
+        </div>
+        <div class="edu-line">
+          <div class="edu-y">2018 — 2023</div>
+          <div><div class="edu-t">Ingeniería de Sistemas</div><div class="edu-o">Universidad Autónoma del Beni José Ballivián</div></div>
+        </div>
+        <div class="edu-line">
+          <div class="edu-y">2005 — 2017</div>
+          <div><div class="edu-t">Educación primaria y secundaria</div><div class="edu-o">U.E. 18 de Noviembre · U.E. Herlan Chávez · U.E. Ntra. Sra. de Lourdes</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---- HABILIDADES ---- -->
+    <section class="content-section" id="habilidades">
+      <div class="kicker">Habilidades</div>
+      <h2>Áreas de competencia</h2>
+      <div class="skill-groups">
+        <div class="skill-box">
+          <h3>Gestión administrativa y comercial</h3>
+          <div class="tag-row">
+            <span class="tag">Almacenes e inventarios</span>
+            <span class="tag">Liquidación y arqueo de ventas</span>
+            <span class="tag">Reportes gerenciales</span>
+            <span class="tag">Coordinación logística</span>
+          </div>
+        </div>
+        <div class="skill-box">
+          <h3>Análisis de datos y tecnología</h3>
+          <div class="tag-row">
+            <span class="tag">Excel avanzado &amp; dashboards</span>
+            <span class="tag">KPIs</span>
+            <span class="tag">Automatización de procesos</span>
+            <span class="tag">ERP / CRM</span>
+          </div>
+        </div>
+        <div class="skill-box">
+          <h3>Seguridad de la información</h3>
+          <div class="tag-row">
+            <span class="tag">ISO/IEC 27001 · 27002</span>
+            <span class="tag">Gestión de riesgos</span>
+            <span class="tag">Respuesta a incidentes</span>
+            <span class="tag">Continuidad del negocio</span>
+          </div>
+        </div>
+        <div class="skill-box">
+          <h3>Finanzas y atención al cliente</h3>
+          <div class="tag-row">
+            <span class="tag">Análisis de crédito</span>
+            <span class="tag">Manejo de efectivo</span>
+            <span class="tag">Negociación</span>
+            <span class="tag">Recuperación de cartera</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---- CONTACTO ---- -->
+    <section class="content-section" id="contacto">
+      <div class="kicker">Contacto</div>
+      <h2>¿Un proyecto, una vacante o una idea?</h2>
+      <div class="contact-card">
+        <h3>Conversemos.</h3>
+        <p>Disponibilidad inmediata desde Trinidad, Beni. Trabajo tanto de forma presencial en la región como de manera remota.</p>
+        <div class="contact-chips">
+          <a class="c-chip" href="mailto:victoremanueleh@gmail.com" data-copy="victoremanueleh@gmail.com">✉️ victoremanueleh@gmail.com</a>
+          <a class="c-chip" href="tel:+59174708845" data-copy="+591 74708845">📞 +591 74708845</a>
+          <span class="c-chip">📍 Trinidad, Beni, Bolivia</span>
+        </div>
+        <div class="copy-note" id="copyNote"></div>
+      </div>
+    </section>
+
+    <footer class="page-end">Víctor Emanuel Escobar Hurtado — Trinidad, Beni, Bolivia</footer>
+  </div>
+</div>
+
+<script>
+  // Active link highlight (desktop sidebar nav + mobile bar)
+  const sections = document.querySelectorAll('.content-section[id]');
+  const navLinks = document.querySelectorAll('.side-nav a, .mobile-bar a');
+  const setActive = () => {
+    let current = '';
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 140 && rect.bottom >= 140) current = sec.id;
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  };
+  document.addEventListener('scroll', setActive, { passive: true });
+  window.addEventListener('load', setActive);
+
+  // Copy email / phone to clipboard
+  const copyNote = document.getElementById('copyNote');
+  document.querySelectorAll('[data-copy]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const text = el.getAttribute('data-copy');
+      navigator.clipboard?.writeText(text).then(() => {
+        copyNote.textContent = 'Copiado: ' + text;
+        setTimeout(() => { copyNote.textContent = ''; }, 2200);
+      });
+      window.location.href = el.getAttribute('href');
+    });
+  });
+
+  // Graceful fallback if an icon fails to load
+  document.querySelectorAll('img[src^="https://cdn.simpleicons.org"]').forEach(img => {
+    img.addEventListener('error', () => { img.style.display = 'none'; }, { once: true });
+  });
+
+  // Fallback if the profile photo fails to load: soft initials circle
+  const photo = document.getElementById('profilePhoto');
+  photo.addEventListener('error', () => {
+    const wrap = photo.parentElement;
+    wrap.innerHTML = '';
+    wrap.style.display = 'flex';
+    wrap.style.alignItems = 'center';
+    wrap.style.justifyContent = 'center';
+    wrap.style.fontFamily = '"Space Grotesk", sans-serif';
+    wrap.style.fontWeight = '700';
+    wrap.style.fontSize = '32px';
+    wrap.style.color = '#8ec5fc';
+    wrap.textContent = 'VE';
+  }, { once: true });
+</script>
+
+</body>
+</html>
